@@ -1,6 +1,6 @@
 import { Octokit } from "https://cdn.skypack.dev/@octokit/core";
 const octokit = new Octokit();
-const HIDDEN = ["README.md", "CNAME", ".nojekyll", ".gitignore"];
+const HIDDEN = /^(README.md|CNAME|.nojekyll|.gitignore|js)$|index.html$/;
 
 // dir tree
 document.addEventListener("DOMContentLoaded", async function(){
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async function(){
   contents.innerHTML = "";
   var li;
   tree.forEach(function(i){
-    if (!HIDDEN.includes(i.path)) {
+    if (!i.path.match(HIDDEN)) {
       li = document.createElement("li");
       li.innerHTML = '<a href="/' + i.path + '">' + i.path + (i.type == "file" ? '' : '/') + '</a>';
       contents.appendChild(li);
